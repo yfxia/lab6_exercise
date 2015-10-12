@@ -22,7 +22,7 @@ def download_data(url):
     ----
     Consider the urllib2 or wget python modules
     """
-    return NotImplemented
+    return wget.download(url)
 
 def save_data(data, output_filename):
     """
@@ -42,14 +42,19 @@ def save_data(data, output_filename):
     Returns
     -------
     out : int
-        Return 0 if the data was saved successfully. Return 1 if the file 
+        Return 0 if the data was saved successfully. Return 1 if the file
         already exists.
 
     Hint
     ----
     Check out the os module for determining whether a file exists already.
     """
-    return NotImplemented
+    if os.path.exists(output_filename):
+        return 1
+    else:
+        with open(output_filename, 'w') as f:
+            f.write(data)
+        return 0
 
 def verify_data(data, known_checksum):
     """
@@ -74,7 +79,7 @@ def verify_data(data, known_checksum):
     Check out the hashlib module
     """
     return NotImplemented
-        
+
 def load_parsed_data(fname):
     """
     Load fmri data in .nii and parse into a numpy array
@@ -83,7 +88,7 @@ def load_parsed_data(fname):
     ----------
     fname : str
         Path to an .nii file containing fmri data
-    
+
     Returns
     -------
     img_ary : numpy.core.memmap.memmap
@@ -101,8 +106,8 @@ def main(data.json):
     is intended to be used with the %run method in ipython to initialize a
     session for data analysis
 
-    This function should load a filename, url, and verified checksum from a 
-    json archive. It will then check if a file with the given name already 
+    This function should load a filename, url, and verified checksum from a
+    json archive. It will then check if a file with the given name already
     exists in ../data. If not, download the data from the given url, save it
     to ../data/<filename>. Then verify the data. If the data verification
     passes, the data should be parsed into a useful numpy format.
